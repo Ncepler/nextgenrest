@@ -46,11 +46,15 @@ placeholder like `[LICENSE #]` rather than making one up.
 
 ## 3. Stack
 
-Next.js (App Router) + Tailwind CSS + Supabase (for the contact/quote-request form storage
-and, if wired up, a simple lead-notification table) + Vercel deploy. Match Noah's existing
-Vilas Studio build conventions: TypeScript, `app/` directory, component files per section,
-no CSS-in-JS, no UI kit beyond Tailwind + shadcn/ui primitives if needed for the before/after
-slider and accordion (FAQ).
+Next.js (App Router) + Tailwind CSS + Vercel deploy. Match Noah's existing Vilas Studio build
+conventions: TypeScript, `app/` directory, component files per section, no CSS-in-JS, no UI kit
+beyond Tailwind + shadcn/ui primitives if needed for the before/after slider and accordion (FAQ).
+
+**No Supabase / form backend.** Noah's org is capped at 2 active free Supabase projects
+(Vilas + studio-site already fill that), and per his direction on 2026-09-13 this site does
+not get a database or a form-submission mechanism — see the `/contact` note in §8. If that
+changes later (a slot frees up, or he wants one specifically), treat it as new scope, not a
+gap to quietly fill back in.
 
 ---
 
@@ -458,15 +462,16 @@ rather than inventing one.
 ### `/contact`
 
 **H1:** Get Help Now
-**Intro:** Available 24 hours a day, 365 days a year. Call us directly or send the details
-below and we'll get back to you right away.
+**Intro:** Available 24 hours a day, 365 days a year. Call us directly or reach out by email
+and we'll get back to you right away.
 **Call block:** `516.491.1601` — large, tap-to-call, `accent` colored.
 **Email block:** `info@nextgenrest.com` — tap-to-email.
-**Form fields:** Name, Phone, Email, Property Address, Type of Damage (dropdown: Fire /
-Water / Flood / Mold / Asbestos / Not Sure), Message. Submit → store in Supabase table
-`contact_submissions`, and show a confirmation state referencing the phone number as the
-faster option.
 **[Map embed placeholder]**
+
+> **2026-09-13 update:** dropped the on-page form + Supabase storage originally specced here
+> (Name/Phone/Email/Address/Damage-type/Message → `contact_submissions`). Per Noah's direction,
+> this site has no database and no form-submission mechanism — Call and Email blocks are the
+> only two conversion paths on this page. Don't re-add a form without new instruction.
 
 ---
 
@@ -493,3 +498,13 @@ faster option.
   Supabase client setup) rather than introducing new patterns.
 - If a build task turns out ambiguous, or a fact needed doesn't exist in this file — stop
   and ask. Don't guess.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

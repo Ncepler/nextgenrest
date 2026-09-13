@@ -157,12 +157,3 @@ export const FOOTER_AREA_LINKS: NavLink[] = SERVICE_AREAS.map((a) => ({
   href: `/service-areas#${a.id}`,
   label: a.name,
 }));
-
-export const DAMAGE_TYPES = [
-  "Fire",
-  "Water",
-  "Flood",
-  "Mold",
-  "Asbestos",
-  "Not Sure",
-] as const;

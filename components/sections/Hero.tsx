@@ -40,7 +40,7 @@ export function Hero() {
           <Button href={PHONE_TEL} variant="primary">
             Call Now: {PHONE_DISPLAY}
           </Button>
-          <Button href="/contact#contact-form" variant="outline">
+          <Button href="/contact" variant="outline">
             Get Emergency Help
           </Button>
         </div>

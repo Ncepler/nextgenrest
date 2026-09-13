@@ -39,8 +39,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col bg-bg text-text-primary">
         <JsonLd data={localBusinessJsonLd()} />
-        <EmergencyBanner />
-        <Header />
+        {/* EmergencyBanner + Header float together, fixed to the viewport
+            top, so Header can sit transparent-over-hero (CLAUDE.md §7)
+            instead of reserving flow space like a normal sticky header. */}
+        <div className="fixed inset-x-0 top-0 z-40">
+          <EmergencyBanner />
+          <Header />
+        </div>
         <main className="flex-1">{children}</main>
         <Footer />
         <MobileCallBar />

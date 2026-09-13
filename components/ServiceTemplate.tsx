@@ -14,7 +14,9 @@ import { InsuranceValueStrip } from "@/components/sections/InsuranceValueStrip";
 export function ServiceTemplate({ service }: { service: Service }) {
   return (
     <>
-      <section className="bg-bg-dark py-20 md:py-28">
+      {/* Extra top clearance (beyond the usual py-20/28) so H1 isn't
+          covered by the fixed EmergencyBanner+Header cluster above it. */}
+      <section className="bg-bg-dark pb-20 pt-36 md:pb-28 md:pt-44">
         <div className="mx-auto max-w-[1280px] px-6 md:px-8">
           <Reveal>
             <H1 className="max-w-2xl text-text-on-dark">{service.h1}</H1>
@@ -23,7 +25,7 @@ export function ServiceTemplate({ service }: { service: Service }) {
               <Button href={PHONE_TEL} variant="primary">
                 Call Now: {PHONE_DISPLAY}
               </Button>
-              <Button href="/contact#contact-form" variant="outline">
+              <Button href="/contact" variant="outline">
                 Get Emergency Help
               </Button>
             </div>

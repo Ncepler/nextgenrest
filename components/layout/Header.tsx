@@ -7,9 +7,11 @@ import { NAV_LINKS, PHONE_DISPLAY, PHONE_TEL, COMPANY_NAME } from "@/lib/site-da
 import { Button } from "@/components/ui/Button";
 
 /**
- * Sticky header, all pages (CLAUDE.md §7). Transparent-over-hero until
- * 80px of scroll, then solid `bg` with a `rule` bottom border. The phone
- * pill stays visible at all times — no exceptions, per CLAUDE.md §10.
+ * Header, all pages (CLAUDE.md §7). Positioned by its parent (a fixed
+ * wrapper in the root layout, alongside EmergencyBanner) so it can sit
+ * transparent-over-hero until 80px of scroll, then solid `bg` with a
+ * `rule` bottom border. The phone pill stays visible at all times — no
+ * exceptions, per CLAUDE.md §10.
  */
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -25,17 +27,17 @@ export function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 transition-colors duration-300",
+        "transition-colors duration-300",
         scrolled
           ? "bg-bg border-b border-rule"
           : "bg-transparent border-b border-transparent",
       )}
     >
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-6 py-4 md:px-8">
+      <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-3 px-6 py-4 md:px-8">
         <Link
           href="/"
           className={cn(
-            "font-display text-lg font-semibold tracking-tight",
+            "min-w-0 truncate font-display text-base font-semibold tracking-tight sm:text-lg",
             scrolled ? "text-text-primary" : "text-text-on-dark",
           )}
         >
@@ -57,20 +59,30 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
-          <Button href={PHONE_TEL} variant="primary" className="hidden sm:inline-flex">
-            Call Now: {PHONE_DISPLAY}
-          </Button>
-          <Button href={PHONE_TEL} variant="primary" className="sm:hidden px-4!">
-            Call
-          </Button>
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          {/* Visibility toggles live on a wrapper, not Button's own
+              className — Button's base already hardcodes `inline-flex`,
+              which wins the cascade over an unprefixed `hidden` passed
+              alongside it (Tailwind orders same-layer utilities by name,
+              not by source order), so `hidden` would silently never
+              apply. Wrapping keeps Button's base untouched. */}
+          <span className="hidden sm:inline-flex">
+            <Button href={PHONE_TEL} variant="primary">
+              Call Now: {PHONE_DISPLAY}
+            </Button>
+          </span>
+          <span className="sm:hidden">
+            <Button href={PHONE_TEL} variant="primary" className="px-4!">
+              Call
+            </Button>
+          </span>
           <button
             type="button"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}
             className={cn(
-              "flex h-10 w-10 items-center justify-center rounded-full md:hidden",
+              "flex h-10 w-10 shrink-0 items-center justify-center rounded-full md:hidden",
               scrolled ? "text-text-primary" : "text-text-on-dark",
             )}
           >
