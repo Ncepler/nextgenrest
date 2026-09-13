@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — CLAUDE.md §6.
+ * Colors validated for WCAG/APCA contrast at authoring time; do not
+ * hand-tune a hex value without re-checking contrast against its
+ * documented pairing in CLAUDE.md §6.1.
+ */
+@theme {
+  --color-bg: #FAFAF7;
+  --color-surface: #EFEFEA;
+  --color-rule: #DCDCD5;
+  --color-text-primary: #14171C;
+  --color-text-secondary: #4B505A;
+  --color-text-tertiary: #53565D;
+  --color-accent: #D6410F;
+  --color-accent-hover: #C13A0D;
+  --color-accent-2: #0E6E8C;
+  --color-on-accent: #FFFFFF;
+  --color-bg-dark: #0D1B2A;
+  --color-text-on-dark: #F2F3F5;
+  --color-text-on-dark-secondary: #C8CED6;
+
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-soft: 0 8px 24px -8px rgba(13, 27, 42, 0.18);
+
+  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.92; }
+  }
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+/* Respect reduced-motion preferences for the one CSS-driven animation. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
