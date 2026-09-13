@@ -61,7 +61,7 @@ export function Header() {
           <Button href={PHONE_TEL} variant="primary" className="hidden sm:inline-flex">
             Call Now: {PHONE_DISPLAY}
           </Button>
-          <Button href={PHONE_TEL} variant="primary" className="sm:hidden !px-4">
+          <Button href={PHONE_TEL} variant="primary" className="sm:hidden px-4!">
             Call
           </Button>
           <button
