@@ -8,11 +8,17 @@ import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/site-data";
  * (a restored/renovated interior), never the disaster — with a bg-dark
  * scrim over the bottom 40% so headline/CTA stay legible.
  *
- * The box is sized `aspect-video` (16:9) on md+ to match the source
- * photo's own aspect ratio — the image reads as "the hero image," not a
- * tall gradient with a photo cropped into it. A `min-h` floor keeps
- * mobile tall enough that the text stack never gets clipped by
- * `overflow-hidden` even where 16:9 alone would be too short.
+ * Sized with plain `min-h` per breakpoint, not `aspect-video`: pairing
+ * `aspect-ratio` with an explicit `min-h`/`max-h` looks reasonable but
+ * isn't — whenever the min/max clamps the height away from what the
+ * ratio would derive from the container's width, the browser derives
+ * width from that clamped height instead of the other way around, so
+ * the section stops being full-bleed (a bug, caught visually: it left a
+ * flat white gap on the right at 1920px wide, and overflowed past the
+ * viewport on mobile — same cause, opposite direction). `object-cover`
+ * on the image below is what actually makes a 16:9 source photo read as
+ * "the hero image" at any box shape, without needing the section itself
+ * to be locked to that ratio.
  *
  * public/images/hero.png (1672×941, ~16:9) is the real photo. Checked with
  * the hero-imagery skill's check_hero.py against the raw file
@@ -31,7 +37,7 @@ import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/site-data";
  */
 export function Hero() {
   return (
-    <section className="relative flex aspect-video min-h-[440px] max-h-[90vh] items-end overflow-hidden bg-[#0D1B2A] md:min-h-[560px]">
+    <section className="relative flex min-h-[480px] items-end overflow-hidden bg-[#0D1B2A] md:min-h-[600px] lg:min-h-[680px]">
       <Image
         src="/images/hero.png"
         alt="A freshly restored living room at dusk — refinished hardwood floors, warm lamplight, and the sunset skyline through tall windows"
