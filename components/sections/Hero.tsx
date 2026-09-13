@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { H1, Lead } from "@/components/ui/Typography";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/site-data";
@@ -7,40 +8,45 @@ import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/site-data";
  * (a restored/renovated interior), never the disaster — with a bg-dark
  * scrim over the bottom 40% so headline/CTA stay legible.
  *
- * The box is sized `aspect-video` (16:9) on md+ so the section's actual
- * shape matches the 16:9 photo it's built for — the image reads as "the
- * hero image," not a tall gradient with a photo cropped into it. A
- * `min-h` floor keeps mobile tall enough that the text stack never gets
- * clipped by `overflow-hidden` even where 16:9 alone would be too short.
+ * The box is sized `aspect-video` (16:9) on md+ to match the source
+ * photo's own aspect ratio — the image reads as "the hero image," not a
+ * tall gradient with a photo cropped into it. A `min-h` floor keeps
+ * mobile tall enough that the text stack never gets clipped by
+ * `overflow-hidden` even where 16:9 alone would be too short.
  *
- * No real photo yet, so the background is a flat gradient standing in for
- * one. Once Noah supplies hero.jpg (16:9, generated per the hero-imagery
- * skill — restored interior, NOT a damage photo), swap the gradient `div`
- * below for:
- *   <Image src="/images/hero.jpg" alt="[describe the actual restored
- *     interior shown]" fill priority sizes="100vw" className="object-cover" />
- * placed as the first child of this section (behind the scrim), then
- * re-run `check_hero.py hero.jpg --text "#F2F3F5" --polarity light
- * --text-rows 3-4` (text sits in the bottom two-fifths — CLAUDE.md §7's
- * scrim band) before shipping, per CLAUDE.md §7's explicit contrast flag.
+ * public/images/hero.png (1672×941, ~16:9) is the real photo. Checked with
+ * the hero-imagery skill's check_hero.py against the raw file
+ * (--text "#F2F3F5" --polarity light --text-rows 3-4, since copy sits in
+ * the bottom two-fifths here): the bare photo alone comes back FAIL —
+ * residual brightness from the window's lower edge lands at 3.28:1 in the
+ * declared text zone, under the 4.5:1 floor the subhead paragraph needs,
+ * and worse (2.80:1) once phone-crop concentrates on that same column.
+ * The scrim below is deliberately stronger than a bare-minimum bottom-40%
+ * fade to compensate — hand-verified back above ~5.7:1 across the text
+ * zone once the scrim alpha is blended in (the check script only measures
+ * the raw file, it can't see the CSS layer on top). Two MARGINAL findings
+ * on the photo itself are accepted, not fixed: zero clipped highlights
+ * (a generated-image tell) and thin contrast (~2.5:1) after simulated
+ * outdoor glare — re-roll the photo if either becomes a real complaint.
  */
 export function Hero() {
   return (
-    <section
-      role="img"
-      aria-label="[HERO IMAGE — restored/renovated interior placeholder]"
-      className="relative flex aspect-video min-h-[440px] max-h-[90vh] items-end overflow-hidden bg-gradient-to-br from-[#0D1B2A] via-[#16324a] to-[#3a2416] md:min-h-[560px]"
-    >
-      <span className="absolute right-4 top-4 z-10 rounded-full bg-bg-dark/70 px-3 py-1 text-[12px] font-semibold text-text-on-dark-secondary md:right-6 md:top-6">
-        Placeholder photo — see build report
-      </span>
+    <section className="relative flex aspect-video min-h-[440px] max-h-[90vh] items-end overflow-hidden bg-[#0D1B2A] md:min-h-[560px]">
+      <Image
+        src="/images/hero.png"
+        alt="A freshly restored living room at dusk — refinished hardwood floors, warm lamplight, and the sunset skyline through tall windows"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
 
-      {/* bg-dark scrim, bottom 40%, for legible text over the (future) photo */}
+      {/* bg-dark scrim, strengthened through the lower half — see comment above */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to top, rgba(13,27,42,0.92) 0%, rgba(13,27,42,0.55) 40%, rgba(13,27,42,0.05) 70%)",
+            "linear-gradient(to top, rgba(13,27,42,0.94) 0%, rgba(13,27,42,0.72) 30%, rgba(13,27,42,0.35) 50%, rgba(13,27,42,0) 75%)",
         }}
       />
 
