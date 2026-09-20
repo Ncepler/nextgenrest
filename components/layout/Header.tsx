@@ -22,26 +22,22 @@ import { MobileMenuSheet } from "./MobileMenuSheet";
  */
 export function Header() {
   const pathname = usePathname();
-  const [overHero, setOverHero] = useState(pathname === "/");
+  // heroInView is set only from the IntersectionObserver's own (async)
+  // callbacks, including its first automatic firing on observe() — never
+  // synchronously in the effect body. Whether a hero is even relevant to
+  // this page is a pure render-time derivation from pathname, so a route
+  // change away from "/" corrects `overHero` for free on the next render,
+  // with no corrective setState needed in the effect.
+  const [heroInView, setHeroInView] = useState(true);
+  const overHero = pathname === "/" && heroInView;
   const [menuOpen, setMenuOpen] = useState(false);
   const menuTriggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const hero = document.getElementById("hero");
-    if (!hero) {
-      setOverHero(false);
-      return;
-    }
-    setOverHero(true);
-    let skippedFirst = false;
+    if (!hero) return;
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!skippedFirst) {
-          skippedFirst = true;
-          return;
-        }
-        setOverHero(entry.isIntersecting || window.scrollY < 50);
-      },
+      ([entry]) => setHeroInView(entry.isIntersecting || window.scrollY < 50),
       { threshold: 0 },
     );
     observer.observe(hero);

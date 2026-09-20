@@ -15,9 +15,18 @@ import { Button } from "@/components/ui/Button";
  * once. Hiding while the mobile menu is open is handled in CSS
  * (`html:has(.menu-sheet[open]) .mobile-call-bar`), since the menu and this
  * bar live in different parts of the tree.
+ *
+ * The outer component only reads the route and re-keys the inner one by
+ * it, so a route change remounts `Bar` fresh instead of needing an effect
+ * to correct stale `redundant` state left over from the previous page's
+ * different `data-call-redundant` targets.
  */
 export function MobileCallBar() {
   const pathname = usePathname();
+  return <Bar key={pathname} />;
+}
+
+function Bar() {
   const [visible, setVisible] = useState(false);
   const [redundant, setRedundant] = useState(false);
 
@@ -30,10 +39,7 @@ export function MobileCallBar() {
 
   useEffect(() => {
     const targets = Array.from(document.querySelectorAll<HTMLElement>("[data-call-redundant]"));
-    if (targets.length === 0) {
-      setRedundant(false);
-      return;
-    }
+    if (targets.length === 0) return;
     const intersecting = new Set<Element>();
     const observer = new IntersectionObserver(
       (entries) => {
@@ -47,7 +53,7 @@ export function MobileCallBar() {
     );
     targets.forEach((t) => observer.observe(t));
     return () => observer.disconnect();
-  }, [pathname]);
+  }, []);
 
   return (
     <div

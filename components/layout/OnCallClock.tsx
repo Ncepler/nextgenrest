@@ -24,6 +24,12 @@ export function OnCallClock({ className }: { className?: string }) {
   const [time, setTime] = useState<string | null>(null);
 
   useEffect(() => {
+    // The one-time synchronous set here is the hydration-safe "populate
+    // after mount" pattern itself, not an avoidable derivation — the
+    // server has no reliable "now," so there is no render-time value to
+    // compute this from; the extra initial render is the intended trade
+    // for SSR/client output matching on first paint.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTime(nyTime(new Date()));
     const id = window.setInterval(() => setTime(nyTime(new Date())), 60_000);
     return () => window.clearInterval(id);
