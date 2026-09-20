@@ -79,7 +79,14 @@ export function Header() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-5">
-          <OnCallClock className="hidden min-[1100px]:inline-flex" />
+          {/* Visibility lives on a wrapper, not OnCallClock's own
+              className — its base already hardcodes `inline-flex`, which
+              wins the cascade over an unprefixed `hidden` passed alongside
+              it (Tailwind orders same-layer utilities by name, not source
+              order), so `hidden` would silently never apply. */}
+          <span className="hidden min-[1100px]:inline-flex">
+            <OnCallClock />
+          </span>
           <span className="hidden lg:inline-flex">
             <Button href={PHONE_TEL} variant="primary">
               Call Now: {PHONE_DISPLAY}
