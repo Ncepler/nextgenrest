@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/sections/PageIntro";
 import { Accordion, type AccordionItem } from "@/components/ui/Accordion";
+import { JsonLd } from "@/components/JsonLd";
+import { SITE_URL } from "@/lib/site-data";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -10,9 +12,19 @@ export const metadata: Metadata = pageMetadata({
   path: "/faq",
 });
 
-// Drafted from CLAUDE.md §2 facts only. One answer below is intentionally
-// non-specific and flagged in the build report — see "average response
-// time" — because no exact figure exists on file yet.
+const breadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "FAQ", item: `${SITE_URL}/faq` },
+  ],
+};
+
+// Drafted from CLAUDE.md §2 facts only. No exact average response time is
+// on file yet — the "How fast" answer below is honest about that instead
+// of inventing a figure, and points to a phone call for a real answer,
+// never a bracketed placeholder in the rendered copy itself.
 const faqs: AccordionItem[] = [
   {
     question: "Does insurance cover this kind of damage?",
@@ -22,7 +34,7 @@ const faqs: AccordionItem[] = [
   {
     question: "How fast can someone get here?",
     answer:
-      "We're on call 24 hours a day, 365 days a year, and we respond to every call as quickly as we can. [EXACT AVERAGE RESPONSE TIME not yet on file — call 516.491.1601 and we'll tell you what to expect for your situation.]",
+      "We're on call 24 hours a day, 365 days a year, and we respond to every call as quickly as we can. Call 516.491.1601 and we'll tell you what to expect for your specific situation.",
   },
   {
     question: "Do you handle the insurance claim for me?",
@@ -59,6 +71,7 @@ const faqs: AccordionItem[] = [
 export default function FaqPage() {
   return (
     <>
+      <JsonLd data={breadcrumbs} />
       <PageIntro h1="Frequently Asked Questions">
         Answers to what homeowners usually want to know before they call.
       </PageIntro>

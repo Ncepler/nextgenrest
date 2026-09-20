@@ -122,7 +122,12 @@ a,
    solid background under reduced-transparency / low-contrast preferences
    (apple-design §12/§14) since blur can't be guaranteed legible there. */
 .nav-material {
-  background: rgba(11, 18, 32, 0.72);
+  /* High enough alpha that the bar still reads as true night when it sits
+     directly over a light page (e.g. /services, which has no dark band
+     of its own) — at 0.72 the blur blended a light background in and
+     read as washed-out slate instead of navy. Still translucent enough
+     to keep the material/glass quality over a photo. */
+  background: rgba(11, 18, 32, 0.92);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-top: 1px solid rgba(255, 255, 255, 0.14);

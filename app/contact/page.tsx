@@ -45,12 +45,17 @@ export default function ContactPage() {
         <Reveal>
           <a
             href={PHONE_TEL}
-            className="press-feedback mx-auto flex max-w-2xl flex-col items-center rounded-2xl bg-ember px-8 py-14 text-center text-white shadow-soft hover:bg-ember-hover md:px-14 md:py-20"
+            className="press-feedback mx-auto flex max-w-2xl flex-col items-center rounded-2xl bg-ember px-5 py-14 text-center text-white shadow-soft hover:bg-ember-hover sm:px-8 md:px-14 md:py-20"
           >
             <Small className="font-semibold uppercase tracking-[0.08em] text-white/80">
               Call Now
             </Small>
-            <span className="mt-4 font-display text-[clamp(3.25rem,7vw+1.75rem,7.5rem)] font-bold leading-[1] tracking-[-0.02em] tabular-nums">
+            {/* Sized to stay the largest text on the page at every width,
+                but the vw-fluid clamp() has no way to know about this
+                tile's own padding — verified against a 375px viewport with
+                Playwright, since a naive clamp minimum overflowed the tile
+                by ~9px on each side there. */}
+            <span className="mt-4 font-display text-[clamp(2.9rem,10vw,7.5rem)] font-bold leading-[1] tracking-[-0.02em] tabular-nums">
               {PHONE_DISPLAY}
             </span>
             <span className="mt-5 font-body text-[17px] font-medium text-white/85">
