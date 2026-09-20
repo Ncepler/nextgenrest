@@ -83,7 +83,8 @@ export const SERVICES: Service[] = [
       "Prevention treatment",
       "Post-remediation verification",
     ],
-    note: "See also: SporesRUs, our dedicated mold-specialist brand, for deep mold-only expertise. [Cross-link once that site is live.]",
+    // Cross-link to SporesRUs (Noah's mold-specialist brand) once that site is live.
+    note: "See also: SporesRUs, our dedicated mold-specialist brand, for deep mold-only expertise.",
   },
   {
     slug: "asbestos-abatement",

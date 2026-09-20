@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ServiceTemplate } from "@/components/ServiceTemplate";
-import { SERVICES } from "@/lib/site-data";
+import { JsonLd } from "@/components/JsonLd";
+import { SERVICES, SITE_URL } from "@/lib/site-data";
 import { pageMetadata } from "@/lib/seo";
 
 const service = SERVICES.find((s) => s.slug === "mold-remediation")!;
@@ -12,6 +13,26 @@ export const metadata: Metadata = pageMetadata({
   path: "/services/mold-remediation",
 });
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+    { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/services` },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: service.name,
+      item: `${SITE_URL}/services/${service.slug}`,
+    },
+  ],
+};
+
 export default function MoldRemediationPage() {
-  return <ServiceTemplate service={service} />;
+  return (
+    <>
+      <JsonLd data={breadcrumbJsonLd} />
+      <ServiceTemplate service={service} />
+    </>
+  );
 }
