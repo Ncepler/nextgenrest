@@ -23,22 +23,22 @@ export function ServiceCard({ service }: { service: Service }) {
   return (
     <Link
       href={`/services/${service.slug}`}
-      className="group flex flex-col rounded-xl border border-rule bg-bg p-6 transition-[transform,box-shadow] duration-150 hover:-translate-y-1 hover:shadow-soft"
+      className="hover-lift group flex flex-col rounded-xl border border-line bg-paper p-6"
     >
-      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-surface text-accent">
+      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-paper-deep text-ink">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           {ICONS[service.slug]}
         </svg>
       </span>
-      <h3 className="mt-4 font-display text-[19px] font-semibold text-text-primary">
+      <h3 className="mt-4 font-display text-[19px] font-bold text-ink">
         {service.name}
       </h3>
-      <p className="mt-2 flex-1 text-[15px] leading-[1.6] text-text-secondary">
+      <p className="mt-2 flex-1 text-[15px] leading-[1.6] text-ink-soft">
         {service.shortDescription}
       </p>
-      <span className="mt-4 inline-flex items-center gap-1 text-[15px] font-semibold text-accent-2">
+      <span className="mt-4 inline-flex items-center gap-1 text-[15px] font-semibold text-ink">
         Learn More
-        <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+        <span aria-hidden="true" className="transition-transform duration-150 ease-out group-hover:translate-x-0.5">
           →
         </span>
       </span>

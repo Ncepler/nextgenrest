@@ -2,21 +2,24 @@ import { cn } from "@/lib/cn";
 
 /**
  * Reusable insurance-trust callout (CLAUDE.md §7) — a contained card, not
- * full-bleed, in the accent-2 (trust/water) tint. Appears on Home, every
- * service page, and /insurance-claims. Build once, use everywhere.
+ * full-bleed. Restyled in the night-to-morning system without a dedicated
+ * accent color: ember means "call" and lamp means "restored," and this is
+ * neither, so it reads through typography and a quiet paper-deep card
+ * instead of color. Appears on Home, every service page, and
+ * /insurance-claims. Build once, use everywhere.
  */
 export function InsuranceValueStrip({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "rounded-xl border border-accent-2/20 bg-accent-2/10 px-6 py-6 md:px-8 md:py-7",
+        "rounded-xl border border-line bg-paper-deep px-6 py-6 md:px-8 md:py-7",
         className,
       )}
     >
       <div className="flex flex-col items-start gap-3 md:flex-row md:items-center md:gap-4">
         <span
           aria-hidden="true"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-2 text-on-accent"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink text-paper"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path
@@ -27,7 +30,7 @@ export function InsuranceValueStrip({ className }: { className?: string }) {
             />
           </svg>
         </span>
-        <p className="font-display text-[18px] font-semibold leading-[1.3] text-accent-2 md:text-[20px]">
+        <p className="font-display text-[18px] font-bold leading-[1.3] text-ink md:text-[20px]">
           We deal with your insurance company so you don&apos;t have to.
         </p>
       </div>

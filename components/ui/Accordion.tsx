@@ -6,8 +6,9 @@ import { cn } from "@/lib/cn";
 export type AccordionItem = { question: string; answer: string };
 
 /**
- * Single-open FAQ accordion (CLAUDE.md §7). `surface` background per item,
- * +/– icon rotates 45° on open.
+ * Single-open FAQ accordion (CLAUDE.md §7). `paper-deep` background per
+ * item, +/– icon rotates 45° on open (200ms — within the accordion
+ * duration budget).
  */
 export function Accordion({ items }: { items: AccordionItem[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -17,20 +18,20 @@ export function Accordion({ items }: { items: AccordionItem[] }) {
       {items.map((item, i) => {
         const isOpen = openIndex === i;
         return (
-          <div key={item.question} className="overflow-hidden rounded-xl bg-surface">
+          <div key={item.question} className="overflow-hidden rounded-xl bg-paper-deep">
             <button
               type="button"
               aria-expanded={isOpen}
               onClick={() => setOpenIndex(isOpen ? null : i)}
-              className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left md:px-6 md:py-5"
+              className="flex w-full items-center justify-between gap-4 rounded-xl px-5 py-4 text-left focus-visible:outline-offset-[-2px] md:px-6 md:py-5"
             >
-              <span className="font-display text-[16px] font-semibold text-text-primary md:text-[18px]">
+              <span className="font-display text-[16px] font-bold text-ink md:text-[18px]">
                 {item.question}
               </span>
               <span
                 aria-hidden="true"
                 className={cn(
-                  "flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-bg text-text-primary transition-transform duration-200",
+                  "flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-paper text-ink transition-transform duration-200 ease-out",
                   isOpen && "rotate-45",
                 )}
               >
@@ -46,7 +47,7 @@ export function Accordion({ items }: { items: AccordionItem[] }) {
               )}
             >
               <div className="overflow-hidden">
-                <p className="px-5 pb-5 text-[15px] leading-[1.6] text-text-secondary md:px-6 md:pb-6">
+                <p className="px-5 pb-5 text-[15px] leading-[1.6] text-ink-soft md:px-6 md:pb-6">
                   {item.answer}
                 </p>
               </div>

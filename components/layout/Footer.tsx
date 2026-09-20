@@ -15,12 +15,12 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-bg-dark text-text-on-dark">
+    <footer className="on-dark bg-night text-text-on-night">
       <div className="mx-auto max-w-[1280px] px-6 py-16 md:px-8 md:py-20">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           <div className="md:col-span-1">
-            <p className="font-display text-lg font-semibold">{COMPANY_NAME}</p>
-            <p className="mt-2 text-[15px] leading-[1.6] text-text-on-dark-secondary">
+            <p className="font-display text-lg font-bold">{COMPANY_NAME}</p>
+            <p className="mt-2 text-[15px] leading-[1.6] text-text-on-night-soft">
               Fire, water, flood, mold, and asbestos restoration for the NYC
               tri-state area — on call 24/7/365.
             </p>
@@ -30,21 +30,21 @@ export function Footer() {
           <FooterColumn title="Service Areas" links={FOOTER_AREA_LINKS} />
 
           <div>
-            <p className="text-[13px] font-semibold uppercase tracking-wide text-text-on-dark-secondary">
+            <p className="text-[13px] font-semibold uppercase tracking-wide text-text-on-night-soft">
               Contact
             </p>
             <ul className="mt-4 flex flex-col gap-2 text-[15px]">
               <li>
-                <a href={PHONE_TEL} className="font-semibold text-text-on-dark hover:underline">
+                <a href={PHONE_TEL} className="font-semibold tabular-nums text-text-on-night hover:underline">
                   {PHONE_DISPLAY}
                 </a>
               </li>
-              <li className="text-text-on-dark-secondary">Available 24/7 · 365 days a year</li>
+              <li className="text-text-on-night-soft">Available 24/7 · 365 days a year</li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-2 border-t border-white/10 pt-6 text-[13px] text-text-on-dark-secondary md:flex-row md:items-center md:justify-between">
+        <div className="mt-14 flex flex-col gap-2 border-t border-line-dark pt-6 text-[13px] text-text-on-night-soft md:flex-row md:items-center md:justify-between">
           <p>
             {COMPANY_NAME} © {year}
           </p>
@@ -71,13 +71,13 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <p className="text-[13px] font-semibold uppercase tracking-wide text-text-on-dark-secondary">
+      <p className="text-[13px] font-semibold uppercase tracking-wide text-text-on-night-soft">
         {title}
       </p>
       <ul className="mt-4 flex flex-col gap-2 text-[15px]">
         {links.map((link) => (
           <li key={link.href}>
-            <Link href={link.href} className="text-text-on-dark-secondary hover:text-text-on-dark hover:underline">
+            <Link href={link.href} className="text-text-on-night-soft hover:text-text-on-night hover:underline">
               {link.label}
             </Link>
           </li>

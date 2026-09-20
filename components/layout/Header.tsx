@@ -1,121 +1,111 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 import { NAV_LINKS, PHONE_DISPLAY, PHONE_TEL, COMPANY_NAME } from "@/lib/site-data";
 import { Button } from "@/components/ui/Button";
+import { OnCallClock } from "./OnCallClock";
+import { MobileMenuSheet } from "./MobileMenuSheet";
 
 /**
- * Header, all pages (CLAUDE.md §7). Positioned by its parent (a fixed
- * wrapper in the root layout) so it can sit transparent-over-hero until
- * 80px of scroll, then solid `bg` with a `rule` bottom border. The phone
- * pill stays visible at all times — no exceptions, per CLAUDE.md §10.
+ * Header, all pages (CLAUDE.md §7). Two states, driven by an
+ * IntersectionObserver on the hero section (id="hero"), not a scroll-Y
+ * pixel threshold, so it holds correctly across viewport sizes: transparent
+ * over the hero, translucent night material once the hero scrolls out.
+ * Both states are dark — the header never becomes a light bar — so nav
+ * text stays a single color throughout; only the background/border tween.
+ * Pages with no #hero (every inner page) render permanently in the
+ * material state, which is also correct there since their own intro band
+ * is night-colored.
  */
 export function Header() {
-  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const [overHero, setOverHero] = useState(pathname === "/");
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuTriggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    const hero = document.getElementById("hero");
+    if (!hero) {
+      setOverHero(false);
+      return;
+    }
+    setOverHero(true);
+    let skippedFirst = false;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!skippedFirst) {
+          skippedFirst = true;
+          return;
+        }
+        setOverHero(entry.isIntersecting || window.scrollY < 50);
+      },
+      { threshold: 0 },
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  const solid = !overHero;
 
   return (
     <header
       className={cn(
-        "transition-colors duration-300",
-        scrolled
-          ? "bg-bg border-b border-rule"
-          : "bg-transparent border-b border-transparent",
+        "on-dark transition-[background-color,border-color] duration-200 ease-out",
+        solid ? "nav-material" : "border-b border-transparent bg-transparent",
       )}
     >
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-3 px-6 py-4 md:px-8">
+      <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-6 py-4 md:px-8">
         <Link
           href="/"
-          className={cn(
-            "min-w-0 truncate font-display text-base font-semibold tracking-tight sm:text-lg",
-            scrolled ? "text-text-primary" : "text-text-on-dark",
-          )}
+          className="min-w-0 shrink-0 truncate font-display text-lg font-bold tracking-tight text-text-on-night"
         >
           {COMPANY_NAME}
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-7 lg:flex" aria-label="Site">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={cn(
-                "font-body text-[15px] font-medium transition-colors hover:opacity-80",
-                scrolled ? "text-text-secondary" : "text-text-on-dark-secondary",
-              )}
+              aria-current={pathname === link.href ? "page" : undefined}
+              className="font-body text-[15px] font-medium text-text-on-night-soft transition-colors hover:text-text-on-night"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          {/* Visibility toggles live on a wrapper, not Button's own
-              className — Button's base already hardcodes `inline-flex`,
-              which wins the cascade over an unprefixed `hidden` passed
-              alongside it (Tailwind orders same-layer utilities by name,
-              not by source order), so `hidden` would silently never
-              apply. Wrapping keeps Button's base untouched. */}
-          <span className="hidden sm:inline-flex">
+        <div className="flex shrink-0 items-center gap-5">
+          <OnCallClock className="hidden min-[1100px]:inline-flex" />
+          <span className="hidden lg:inline-flex">
             <Button href={PHONE_TEL} variant="primary">
               Call Now: {PHONE_DISPLAY}
             </Button>
           </span>
-          <span className="sm:hidden">
-            <Button href={PHONE_TEL} variant="primary" className="px-4!">
-              Call
-            </Button>
-          </span>
+
+          {/* Mobile: logo + Menu only. No call button here — MobileCallBar
+              is the single mobile call affordance, per the "one persistent
+              call CTA per viewport" rule. */}
           <button
+            ref={menuTriggerRef}
             type="button"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMenuOpen(true)}
+            aria-haspopup="dialog"
             aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((v) => !v)}
-            className={cn(
-              "flex h-10 w-10 shrink-0 items-center justify-center rounded-full md:hidden",
-              scrolled ? "text-text-primary" : "text-text-on-dark",
-            )}
+            className="press-feedback flex h-11 items-center gap-2 rounded-full px-3 text-text-on-night lg:hidden"
           >
-            <span className="sr-only">Menu</span>
-            {menuOpen ? (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            ) : (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            )}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            <span className="font-body text-[15px] font-semibold">Menu</span>
           </button>
         </div>
       </div>
 
-      {menuOpen && (
-        <nav className="border-t border-rule bg-bg px-6 py-4 md:hidden">
-          <ul className="flex flex-col gap-4">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="font-body text-[16px] font-medium text-text-primary"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
+      <MobileMenuSheet open={menuOpen} onOpenChange={setMenuOpen} triggerRef={menuTriggerRef} />
     </header>
   );
 }

@@ -1,12 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ReactNode } from "react";
+import { EASE_OUT } from "@/lib/motion";
 
 /**
- * Scroll-reveal wrapper — fade up 16px + opacity 0→1 over 500ms, ease-out,
- * triggered once at 20% viewport visibility (CLAUDE.md §6.4). Reused on
- * every page; do not rebuild this per page.
+ * Scroll-reveal wrapper — fade up + opacity 0→1, triggered once at 20%
+ * viewport visibility. Reused on every page; do not rebuild this per page.
+ * Reduced motion keeps the opacity fade (state indication / preventing a
+ * jarring appearance) and drops the position change, per the "gentler, not
+ * zero" rule.
  */
 export function Reveal({
   children,
@@ -17,13 +20,15 @@ export function Reveal({
   className?: string;
   delay?: number;
 }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, transform: reduceMotion ? "translateY(0px)" : "translateY(16px)" }}
+      whileInView={{ opacity: 1, transform: "translateY(0px)" }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.5, ease: "easeOut", delay }}
+      transition={{ duration: 0.5, ease: EASE_OUT, delay }}
     >
       {children}
     </motion.div>
