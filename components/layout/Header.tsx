@@ -8,10 +8,9 @@ import { Button } from "@/components/ui/Button";
 
 /**
  * Header, all pages (CLAUDE.md §7). Positioned by its parent (a fixed
- * wrapper in the root layout, alongside EmergencyBanner) so it can sit
- * transparent-over-hero until 80px of scroll, then solid `bg` with a
- * `rule` bottom border. The phone pill stays visible at all times — no
- * exceptions, per CLAUDE.md §10.
+ * wrapper in the root layout) so it can sit transparent-over-hero until
+ * 80px of scroll, then solid `bg` with a `rule` bottom border. The phone
+ * pill stays visible at all times — no exceptions, per CLAUDE.md §10.
  */
 export function Header() {
   const [scrolled, setScrolled] = useState(false);

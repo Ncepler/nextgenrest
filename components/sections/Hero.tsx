@@ -1,4 +1,5 @@
 import Image from "next/image";
+import heroImage from "@/public/images/hero.png";
 import { Button } from "@/components/ui/Button";
 import { H1, Lead } from "@/components/ui/Typography";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/site-data";
@@ -39,7 +40,7 @@ export function Hero() {
   return (
     <section className="relative flex min-h-[480px] items-end overflow-hidden bg-[#0D1B2A] md:min-h-[600px] lg:min-h-[680px]">
       <Image
-        src="/images/hero.png"
+        src={heroImage}
         alt="A freshly restored living room at dusk — refinished hardwood floors, warm lamplight, and the sunset skyline through tall windows"
         fill
         priority

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/sections/PageIntro";
-import { PlaceholderBlock } from "@/components/ui/PlaceholderBlock";
 import { Reveal } from "@/components/ui/Reveal";
-import { H3, Body } from "@/components/ui/Typography";
+import { H3, Body, Small } from "@/components/ui/Typography";
 import { pageMetadata } from "@/lib/seo";
+import { TEAM } from "@/lib/team";
+import { CREDENTIALS } from "@/lib/credentials";
 
 export const metadata: Metadata = pageMetadata({
   title: "About Us",
@@ -49,12 +50,33 @@ export default function AboutPage() {
           ))}
         </div>
 
-        <Reveal delay={0.2}>
-          <div className="mt-16 grid gap-6 sm:grid-cols-2">
-            <PlaceholderBlock label="[Team photos placeholder]" />
-            <PlaceholderBlock label="[Certifications/licenses placeholder]" />
-          </div>
-        </Reveal>
+        {TEAM.length > 0 && (
+          <Reveal delay={0.2}>
+            <div className="mt-16 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+              {TEAM.map((member) => (
+                <div key={member.name} className="text-center">
+                  <p className="font-display text-[17px] font-semibold text-text-primary">
+                    {member.name}
+                  </p>
+                  <Small className="text-text-secondary">{member.role}</Small>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        )}
+
+        {CREDENTIALS.length > 0 && (
+          <Reveal delay={0.24}>
+            <div className="mt-16 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-rule pt-8">
+              {CREDENTIALS.map((c) => (
+                <Small key={c.label} className="font-semibold text-text-secondary">
+                  {c.label}
+                  {c.issuer ? ` · ${c.issuer}` : ""}
+                </Small>
+              ))}
+            </div>
+          </Reveal>
+        )}
       </section>
     </>
   );

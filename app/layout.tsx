@@ -4,7 +4,6 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileCallBar } from "@/components/layout/MobileCallBar";
-import { EmergencyBanner } from "@/components/layout/EmergencyBanner";
 import { JsonLd } from "@/components/JsonLd";
 import { localBusinessJsonLd } from "@/lib/schema";
 import { COMPANY_NAME, SITE_URL } from "@/lib/site-data";
@@ -39,11 +38,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col bg-bg text-text-primary">
         <JsonLd data={localBusinessJsonLd()} />
-        {/* EmergencyBanner + Header float together, fixed to the viewport
-            top, so Header can sit transparent-over-hero (CLAUDE.md §7)
-            instead of reserving flow space like a normal sticky header. */}
+        {/* Fixed to the viewport top so Header can sit transparent-over-hero
+            (CLAUDE.md §7) instead of reserving flow space like a normal
+            sticky header. One call CTA per viewport: this is the only call
+            affordance on desktop; MobileCallBar is the only one on mobile. */}
         <div className="fixed inset-x-0 top-0 z-40">
-          <EmergencyBanner />
           <Header />
         </div>
         <main className="flex-1">{children}</main>

@@ -1,22 +1,16 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import { cn } from "@/lib/cn";
+import Image from "next/image";
+import type { JobPhoto } from "@/lib/jobs";
 
 /**
- * Draggable before/after comparison (CLAUDE.md §6.4/§7) — one component,
- * used on every /services/* page. Drag, tap-and-hold, or arrow keys move
- * the divider; this is a real interaction, not a static side-by-side pair.
- * `beforeLabel`/`afterLabel` stand in for real job photos until Noah
- * supplies them (CLAUDE.md §8, "[Before/After slider placeholder]").
+ * Draggable before/after comparison (CLAUDE.md §6.4/§7). Drag, tap-and-hold,
+ * or arrow keys move the divider — a real interaction, not a static
+ * side-by-side pair. Renders only when the caller has a real photo pair;
+ * see lib/jobs.ts and ServiceTemplate for the empty-state gating.
  */
-export function BeforeAfterSlider({
-  beforeLabel = "[Before/After slider placeholder — real job photos] — Before",
-  afterLabel = "[Before/After slider placeholder — real job photos] — After",
-}: {
-  beforeLabel?: string;
-  afterLabel?: string;
-}) {
+export function BeforeAfterSlider({ before, after }: { before: JobPhoto; after: JobPhoto }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [percent, setPercent] = useState(50);
   const draggingRef = useRef(false);
@@ -58,19 +52,15 @@ export function BeforeAfterSlider({
       onPointerUp={onPointerUp}
       onPointerLeave={onPointerUp}
     >
-      {/* After layer — full size, sits underneath */}
-      <Panel label={afterLabel} tone="after" className="absolute inset-0" />
+      <Image src={after.src} alt={after.alt} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
 
-      {/* Before layer — full size too, clipped via clip-path so it never
-          resizes/distorts as the divider moves */}
-      <Panel
-        label={beforeLabel}
-        tone="before"
+      <div
         className="absolute inset-0"
         style={{ clipPath: `inset(0 ${100 - percent}% 0 0)` }}
-      />
+      >
+        <Image src={before.src} alt={before.alt} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
+      </div>
 
-      {/* Divider + handle */}
       <div className="absolute inset-y-0 z-10 w-0.5 bg-bg" style={{ left: `${percent}%` }}>
         <div
           role="slider"
@@ -100,35 +90,6 @@ export function BeforeAfterSlider({
       <span className="absolute right-3 top-3 z-10 rounded-full bg-bg-dark/70 px-2.5 py-1 text-[12px] font-semibold text-text-on-dark">
         After
       </span>
-    </div>
-  );
-}
-
-function Panel({
-  label,
-  tone,
-  className,
-  style,
-}: {
-  label: string;
-  tone: "before" | "after";
-  className?: string;
-  style?: React.CSSProperties;
-}) {
-  return (
-    <div
-      role="img"
-      aria-label={label}
-      style={style}
-      className={cn(
-        "flex items-center justify-center p-6 text-center",
-        tone === "before"
-          ? "bg-gradient-to-br from-[#3a2416] to-[#5a3a1e]"
-          : "bg-gradient-to-br from-[#0e3a4a] to-[#0E6E8C]",
-        className,
-      )}
-    >
-      <span className="max-w-[220px] text-[13px] font-medium text-white/85">{label}</span>
     </div>
   );
 }

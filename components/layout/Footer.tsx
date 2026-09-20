@@ -1,8 +1,6 @@
 import Link from "next/link";
 import {
   COMPANY_NAME,
-  EMAIL,
-  EMAIL_MAILTO,
   FOOTER_AREA_LINKS,
   FOOTER_SERVICE_LINKS,
   PHONE_DISPLAY,
@@ -39,11 +37,6 @@ export function Footer() {
               <li>
                 <a href={PHONE_TEL} className="font-semibold text-text-on-dark hover:underline">
                   {PHONE_DISPLAY}
-                </a>
-              </li>
-              <li>
-                <a href={EMAIL_MAILTO} className="text-text-on-dark-secondary hover:underline">
-                  {EMAIL}
                 </a>
               </li>
               <li className="text-text-on-dark-secondary">Available 24/7 · 365 days a year</li>

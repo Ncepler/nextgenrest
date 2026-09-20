@@ -6,8 +6,6 @@
 
 export const PHONE_DISPLAY = "516.491.1601";
 export const PHONE_TEL = "tel:15164911601";
-export const EMAIL = "info@nextgenrest.com";
-export const EMAIL_MAILTO = "mailto:info@nextgenrest.com";
 export const SITE_URL = "https://nextgenrest.com";
 export const COMPANY_NAME = "Next Generation Restoration";
 

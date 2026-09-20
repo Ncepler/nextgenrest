@@ -12,7 +12,7 @@ export function PageIntro({
 }) {
   return (
     // Extra top clearance (beyond the usual py-20/28) so H1 isn't covered
-    // by the fixed EmergencyBanner+Header cluster floating above it.
+    // by the fixed Header floating above it.
     <section className="bg-bg-dark pb-20 pt-36 md:pb-28 md:pt-44">
       <div className="mx-auto max-w-[1280px] px-6 md:px-8">
         <Reveal>

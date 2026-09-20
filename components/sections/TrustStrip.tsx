@@ -1,4 +1,3 @@
-import { Counter } from "@/components/ui/Counter";
 import { Small } from "@/components/ui/Typography";
 
 const ICONS = {
@@ -27,17 +26,19 @@ function Item({ icon, children }: { icon: keyof typeof ICONS; children: React.Re
   );
 }
 
-/** Trust strip, directly under the hero (CLAUDE.md §7). */
+/**
+ * Trust strip, directly under the hero (CLAUDE.md §7). Static text only —
+ * these are fixed claims, not a live count, so there is nothing to animate
+ * and the server-rendered HTML is always the true, final text.
+ */
 export function TrustStrip() {
   return (
     <div className="bg-surface">
       <div className="mx-auto flex max-w-[1280px] flex-col gap-5 px-6 py-8 md:flex-row md:flex-wrap md:items-center md:justify-between md:px-8">
-        <Item icon="clock">
-          <Counter value={24} /> / 7 · <Counter value={365} /> Days a Year
-        </Item>
+        <Item icon="clock">24/7 Emergency Response</Item>
         <Item icon="shield">Direct Insurance Billing</Item>
         <Item icon="pin">NYC Tri-State Coverage</Item>
-        <Item icon="flame">Fire · Water · Mold · Asbestos</Item>
+        <Item icon="flame">Fire / Water / Mold / Asbestos</Item>
       </div>
     </div>
   );
