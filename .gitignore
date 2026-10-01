@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw video masters (unused by the app; keep only the encoded output)
+public/videos/*-raw.mp4
