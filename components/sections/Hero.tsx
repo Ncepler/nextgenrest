@@ -53,8 +53,14 @@ export function Hero() {
       id="hero"
       ref={wrapperRef}
       className={cn(
-        "relative overflow-hidden bg-night",
-        variant === "video" ? "h-[400svh]" : "flex min-h-[100svh] items-end",
+        "relative bg-night",
+        // overflow-hidden here would clip the still-stage zoom transform, but
+        // it also breaks `position: sticky` on VideoStage's child (any
+        // ancestor with overflow != visible becomes sticky's containing
+        // block, and this one never scrolls on its own) — confirmed by
+        // measuring the sticky element drift off-screen instead of pinning.
+        // Only the non-video stage needs the clip, so scope it there.
+        variant === "video" ? "h-[400svh]" : "flex min-h-[100svh] items-end overflow-hidden",
       )}
     >
       {variant === "video" ? (
